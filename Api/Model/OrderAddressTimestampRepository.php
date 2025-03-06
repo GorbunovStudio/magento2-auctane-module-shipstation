@@ -54,6 +54,15 @@ class OrderAddressTimestampRepository implements OrderAddressTimestampRepository
         return $entity;
     }
 
+    public function find(int $id): OrderAddressTimestampInterface
+    {
+        $entity = $this->entityFactory->create();
+
+        $this->resource->load($entity, $id);
+
+        return $entity;
+    }
+
     public function delete(OrderAddressTimestampInterface $entity): bool
     {
         try {

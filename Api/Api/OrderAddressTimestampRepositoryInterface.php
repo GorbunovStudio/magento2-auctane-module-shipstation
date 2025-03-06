@@ -28,6 +28,14 @@ interface OrderAddressTimestampRepositoryInterface
     public function get(int $id): OrderAddressTimestampInterface;
 
     /**
+     * Find OrderAddressTimestamp by ID
+     *
+     * @param int $id
+     * @return \Auctane\Api\Api\Data\OrderAddressTimestampInterface
+     */
+    public function find(int $id): OrderAddressTimestampInterface;
+
+    /**
      * Delete OrderAddressTimestamp
      *
      * @param \Auctane\Api\Api\Data\OrderAddressTimestampInterface $entity
