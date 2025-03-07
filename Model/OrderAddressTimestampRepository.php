@@ -43,7 +43,7 @@ class OrderAddressTimestampRepository implements OrderAddressTimestampRepository
 
     public function get(int $id): OrderAddressTimestampInterface
     {
-        $entity = $this->$entityFactory->create();
+        $entity = $this->entityFactory->create();
 
         $this->resource->load($entity, $id);
 
