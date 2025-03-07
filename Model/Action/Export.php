@@ -2,6 +2,7 @@
 
 namespace Auctane\Api\Model\Action;
 
+use Auctane\Api\Api\Data\OrderAddressTimestampInterface;
 use Auctane\Api\Helper\Data;
 use Auctane\Api\Model\Config\Source\ImportChild;
 use Auctane\Api\Model\WeightAdapter;
@@ -178,14 +179,41 @@ class Export
         $this->_xmlData = "<?xml version=\"1.0\" encoding=\"utf-16\"?>\n";
 
         if ($from && $to) {
-            $orders = $this->orderCollectionFactory->create()
-                ->addAttributeToSort(OrderInterface::UPDATED_AT, SortOrder::SORT_DESC)
-                ->addAttributeToFilter(OrderInterface::UPDATED_AT, ['from' => $from, 'to' => $to])
-                ->addAttributeToFilter(OrderInterface::SHIPPING_DESCRIPTION, ['notnull' => true])
+            $orders = $this->orderCollectionFactory->create();
+
+            $orders->getSelect()
+                ->joinLeft(
+                    ['order_address' => 'sales_order_address'],
+                    'main_table.entity_id = order_address.parent_id AND order_address.address_type = \'' . Address::TYPE_SHIPPING . '\'',
+                    []
+                )->joinLeft(
+                    ['order_address_timestamp' => 'auctane_shipstation_order_address_timestamp'],
+                    'order_address.entity_id = order_address_timestamp.entity_id',
+                    []
+                );
+
+            $orders->addAttributeToSort('main_table.' . OrderInterface::UPDATED_AT, SortOrder::SORT_DESC)
+                ->addFieldToFilter(
+                    [
+                        'main_table.' . OrderInterface::UPDATED_AT,
+                        'order_address_timestamp.' . OrderAddressTimestampInterface::UPDATED_AT,
+                    ],
+                    [
+                        [
+                            'from'      => $from,
+                            'to'        => $to,
+                        ],
+                        [
+                            'from'      => $from,
+                            'to'        => $to,
+                        ],
+                    ]
+                )
+                ->addAttributeToFilter('main_table.' . OrderInterface::SHIPPING_DESCRIPTION, ['notnull' => true])
                 ->setPage($page, self::EXPORT_SIZE);
 
             if (!empty($storeIds)) {
-                $orders->addAttributeToFilter(OrderInterface::STORE_ID, $storeIds);
+                $orders->addAttributeToFilter('main_table.' . OrderInterface::STORE_ID, $storeIds);
             }
 
             $this->writeShippableOrdersXml($orders);

@@ -22,9 +22,13 @@ class TrackOrderShippingAddressUpdateTimestampObserver implements ObserverInterf
     public function execute(Observer $observer)
     {
         /** @var OrderAddressInterface $orderAddress */
-        $orderAddress = $observer->getEvent()->getOrderAddress();
+        $orderAddress = $observer->getEvent()->getAddress();
 
         if ($orderAddress->getAddressType() !== Address::TYPE_SHIPPING) {
+            return;
+        }
+
+        if (!$orderAddress->getEntityId()) {
             return;
         }
 
@@ -35,9 +39,11 @@ class TrackOrderShippingAddressUpdateTimestampObserver implements ObserverInterf
             return;
         }
 
-        $timestamp = $this->orderAddressTimestampRepository->find($orderAddress->getId());
+        $timestamp = $this->orderAddressTimestampRepository->find(
+            (int) $orderAddress->getEntityId()
+        );
 
-        $timestamp->setId($orderAddress->getId());
+        $timestamp->setId((int) $orderAddress->getEntityId());
         $timestamp->setUpdatedAt((new DateTime())->format('Y-m-d H:i:s'));
 
         $this->orderAddressTimestampRepository->save($timestamp);

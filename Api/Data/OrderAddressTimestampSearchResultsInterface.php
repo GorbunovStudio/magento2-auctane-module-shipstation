@@ -13,7 +13,7 @@ interface OrderAddressTimestampSearchResultsInterface extends SearchResultsInter
      *
      * @return \Auctane\Api\Api\Data\OrderAddressTimestampInterface[]
      */
-    public function getItems(): array;
+    public function getItems();
 
     /**
      * Set list of OrderAddressTimestamp items
@@ -21,5 +21,5 @@ interface OrderAddressTimestampSearchResultsInterface extends SearchResultsInter
      * @param \Auctane\Api\Api\Data\OrderAddressTimestampInterface[] $items
      * @return $this
      */
-    public function setItems(array $items): self;
+    public function setItems(array $items);
 }

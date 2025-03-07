@@ -14,15 +14,15 @@ interface OrderAddressTimestampInterface
      *
      * @return int|null
      */
-    public function getId(): ?int;
+    public function getId();
 
     /**
      * Set entity ID
      *
-     * @param int $value
+     * @param int|null $value
      * @return $this
      */
-    public function setId(int $value): self;
+    public function setId($value);
 
     /**
      * Get updated at

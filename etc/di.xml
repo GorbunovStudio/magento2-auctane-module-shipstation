@@ -2,6 +2,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
+    <preference for="Auctane\Api\Api\Data\OrderAddressTimestampInterface"
+        type="Auctane\Api\Model\OrderAddressTimestamp" />
+    <preference for="Auctane\Api\Api\Data\OrderAddressTimestampSearchResultsInterface"
+        type="Auctane\Api\Model\OrderAddressTimestampSearchResults" />
+    <preference for="Auctane\Api\Api\OrderAddressTimestampRepositoryInterface"
+        type="Auctane\Api\Model\OrderAddressTimestampRepository" />
+
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">

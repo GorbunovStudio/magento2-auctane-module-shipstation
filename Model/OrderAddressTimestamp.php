@@ -21,12 +21,13 @@ class OrderAddressTimestamp extends AbstractModel implements OrderAddressTimesta
         $this->_init(Resource::class);
     }
 
-    /**
-     * Get entity ID
-     *
-     * @return int|null
-     */
-    public function getId(): ?int
+    /** @return string[] */
+    public function getIdentities(): array
+    {
+        return [self::CACHE_TAG . '_' . $this->getId()];
+    }
+
+    public function getId()
     {
         $value = parent::getId();
 
@@ -37,33 +38,16 @@ class OrderAddressTimestamp extends AbstractModel implements OrderAddressTimesta
         return (int) $value;
     }
 
-    /**
-     * Set entity ID
-     *
-     * @param int $value
-     * @return $this
-     */
-    public function setId(int $value): self
+    public function setId($value)
     {
         return parent::setId($value);
     }
 
-    /**
-     * Get updated at
-     *
-     * @return string
-     */
     public function getUpdatedAt(): string
     {
         return $this->getData(self::UPDATED_AT);
     }
 
-    /**
-     * Set updated at
-     *
-     * @param string $value
-     * @return $this
-     */
     public function setUpdatedAt(string $value): self
     {
         $this->setData(self::UPDATED_AT, $value);
