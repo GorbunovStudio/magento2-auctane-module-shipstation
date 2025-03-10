@@ -9,7 +9,7 @@
             name="entity_id"
             unsigned="true"
             nullable="false"
-            identity="true"
+            identity="false"
             comment="Entity ID"/>
         <column xsi:type="timestamp"
             name="updated_at"
