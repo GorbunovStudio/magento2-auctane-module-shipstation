@@ -15,7 +15,7 @@
             name="updated_at"
             nullable="false"
             default="CURRENT_TIMESTAMP"
-            on_update="true"
+            on_update="false"
             comment="Updated At"/>
         <constraint xsi:type="primary"
             referenceId="PRIMARY">
