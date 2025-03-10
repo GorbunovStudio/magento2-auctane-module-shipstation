@@ -1,0 +1,15 @@
+{
+    "auctane_shipstation_order_address_timestamp": {
+        "column": {
+            "entity_id": true,
+            "updated_at": true
+        },
+        "index": {
+            "IDX_AUCTANE_SHIPSTATION_ORDER_ADDRESS_TIMESTAMP_UPDATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_AUCTANE_SHIPSTATION_ORDER_ADDRESS_TIMESTAMP_ORDER_ADDRESS_ENTITY_ID": true
+        }
+    }
+}

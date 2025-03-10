@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_address_save_after">
+        <observer name="auctane_api_track_order_shipping_address_update_timestamp_observer" instance="Auctane\Api\Observer\TrackOrderShippingAddressUpdateTimestampObserver" />
+    </event>
+</config>

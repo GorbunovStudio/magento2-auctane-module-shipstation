@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="auctane_shipstation_order_address_timestamp"
+        resource="default"
+        engine="innodb"
+        comment="Auctane Shipstation Order Address Timestamp">
+        <column xsi:type="int"
+            name="entity_id"
+            unsigned="true"
+            nullable="false"
+            identity="false"
+            comment="Entity ID"/>
+        <column xsi:type="timestamp"
+            name="updated_at"
+            nullable="false"
+            default="CURRENT_TIMESTAMP"
+            on_update="false"
+            comment="Updated At"/>
+        <constraint xsi:type="primary"
+            referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+            referenceId="FK_AUCTANE_SHIPSTATION_ORDER_ADDRESS_TIMESTAMP_ORDER_ADDRESS_ENTITY_ID"
+            table="auctane_shipstation_order_address_timestamp"
+            column="entity_id"
+            referenceTable="sales_order_address"
+            referenceColumn="entity_id"
+            onDelete="CASCADE"/>
+        <index referenceId="IDX_AUCTANE_SHIPSTATION_ORDER_ADDRESS_TIMESTAMP_UPDATED_AT">
+            <column name="updated_at"/>
+        </index>
+    </table>
+</schema>
