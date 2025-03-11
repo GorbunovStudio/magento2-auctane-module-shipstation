@@ -347,14 +347,14 @@ class Export
     {
         $shippingAddress = $order->getShippingAddress();
 
-        if ($shippingAddress && (string) $shippingAddress->getVatId()) {
-            return (string) $shippingAddress->getVatId();
+        if ($shippingAddress && $shippingAddress->getVatId()) {
+            return $shippingAddress->getVatId();
         }
 
         $billingAddress = $order->getBillingAddress();
 
-        if ($billingAddress && (string) $billingAddress->getVatId()) {
-            return (string) $billingAddress->getVatId();
+        if ($billingAddress && $billingAddress->getVatId()) {
+            return $billingAddress->getVatId();
         }
 
         return null;
