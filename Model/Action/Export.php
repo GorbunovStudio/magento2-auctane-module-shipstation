@@ -271,6 +271,12 @@ class Export
         $this->addXmlElement("LastModified", "<![CDATA[{$order->getUpdatedAt()}]]>");
         $this->addXmlElement("CurrencyCode", "<![CDATA[{$order->getOrderCurrencyCode()}]]>");
 
+        $vatId = $this->getOrderVatId($order);
+        
+        if ($vatId) {
+            $this->addXmlElement("CustomField1", "<![CDATA[Tax ID: {$vatId}]]>");
+        }
+
         $this->addXmlElement(
             "ShippingMethod",
             "<![CDATA[{$order->getShippingDescription()}|{$order->getShippingMethod()}]]>"
@@ -335,6 +341,23 @@ class Export
         $this->_xmlData .= "\t</Order>\n";
 
         return $this;
+    }
+
+    private function getOrderVatId(Order $order): ?string
+    {
+        $shippingAddress = $order->getShippingAddress();
+
+        if ($shippingAddress && (string) $shippingAddress->getVatId()) {
+            return (string) $shippingAddress->getVatId();
+        }
+
+        $billingAddress = $order->getBillingAddress();
+
+        if ($billingAddress && (string) $billingAddress->getVatId()) {
+            return (string) $billingAddress->getVatId();
+        }
+
+        return null;
     }
 
     /**
