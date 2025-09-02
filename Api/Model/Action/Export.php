@@ -25,11 +25,6 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
 
-
-/**
- * Class Export
- * @package Auctane\Api\Model\Action
- */
 class Export
 {
     /**
@@ -106,6 +101,13 @@ class Export
      */
     private $_attributes = '';
 
+    /**
+     * UPC mapping attribute
+     *
+     * @var string
+     */
+    private $_upcMapping = '';
+
     /** @var WeightAdapter */
     private $weightAdapter;
 
@@ -137,8 +139,7 @@ class Export
         WeightAdapter $weightAdapter,
         RegionCollectionFactory $regionCollectionFactory,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->_scopeConfig = $scopeConfig;
         $this->_eavConfig = $eavConfig;
         $this->_dataHelper = $dataHelper;
@@ -162,6 +163,9 @@ class Export
         //Check for the import child items for the bundle product
         $attributes = 'shipstation_general/shipstation/attribute';
         $this->_attributes = $this->_scopeConfig->getValue($attributes, ScopeInterface::SCOPE_STORE);
+        //Get UPC mapping attribute
+        $upcMapping = 'shipstation_general/shipstation/upc_mapping';
+        $this->_upcMapping = $this->_scopeConfig->getValue($upcMapping, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -230,6 +234,10 @@ class Export
      */
     private function toDateString(?string $urlDate): ?string
     {
+        if ($urlDate === null) {
+            return null;
+        }
+
         $time = strtotime(urldecode($urlDate));
 
         if (!$time) {
@@ -291,35 +299,33 @@ class Export
             $orderTax = $order->getTaxAmount();
             $orderShipping = $order->getShippingAmount();
         }
-
+        $payment = $order->getPayment();
+        if ($payment) {
+           $this->addXmlElement("PaymentMethod", "<![CDATA[{$payment->getMethod()}]]>");
+        }
         $this->addXmlElement("OrderTotal", "<![CDATA[{$orderTotal}]]>");
         $this->addXmlElement("TaxAmount", "<![CDATA[{$orderTax}]]>");
         $this->addXmlElement("ShippingAmount", "<![CDATA[{$orderShipping}]]>");
         $this->_getInternalNotes($order);
         $this->addXmlElement("StoreCode", "<![CDATA[{$order->getStore()->getCode()}]]>");
 
-        if ($order->getGiftMessageId())
-		{
-			$this->_getGiftMessageInfo($order);
-		} 
-		else 
-		{
-			$item = null;
-			foreach ($order->getItems() as $orderItem) 
-			{
-				if ($orderItem->getGiftMessageId()) 
-				{
-					$item = $orderItem;
-					break;
-				}
-			}
-	
-			if ($item) {
-				$this->_getGiftMessageInfo($item);
-			} else {
-				$this->_getGiftMessageInfo($order);
-			}
-		}
+        if ($order->getGiftMessageId()) {
+            $this->_getGiftMessageInfo($order);
+        } else {
+            $item = null;
+            foreach ($order->getItems() as $orderItem) {
+                if ($orderItem->getGiftMessageId()) {
+                    $item = $orderItem;
+                    break;
+                }
+            }
+
+            if ($item) {
+                $this->_getGiftMessageInfo($item);
+            } else {
+                $this->_getGiftMessageInfo($order);
+            }
+        }
 
         $this->_xmlData .= "\t<Customer>\n";
         $this->addXmlElement("CustomerCode", "<![CDATA[{$order->getCustomerEmail()}]]>");
@@ -385,9 +391,11 @@ class Export
      */
     private function _getInternalNotes(Order $order)
     {
-        $internalNotes = array();
+        $internalNotes = [];
         foreach ($order->getStatusHistoryCollection() as $internalNote) {
-            if (empty(trim($internalNote->getComment() ?? ""))) continue; // You can no longer trim a null string in PHP8.
+            if (empty(trim($internalNote->getComment() ?? ""))) {
+                continue; // You can no longer trim a null string in PHP8.
+            }
             array_unshift($internalNotes, $internalNote->getComment());
         }
         $internalNotes = implode("\n", $internalNotes);
@@ -457,15 +465,14 @@ class Export
      * @param int $maxLength
      * @return string
      */
-    private function trimChars(string $value = null, int $maxLength): string
-    {   
+    private function trimChars(?string $value, int $maxLength): string
+    {
         if (strlen($value ?? "") > $maxLength) {
 
             $this->logger->warning('The value is too long (magento). Trimming '.$value.' to '.$maxLength.' characters from '.strlen($value));
 
             return mb_substr($value ?? "", 0, $maxLength);
-        }
-        else {
+        } else {
 
             return $value ?? "";
         }
@@ -584,6 +591,11 @@ class Export
             $this->addXmlElement("WeightUnits", "<![CDATA[{$foreighWeight->getUnit()}]]>");
             $this->addXmlElement("UnitPrice", "<![CDATA[{$price}]]>");
             $this->addXmlElement("Quantity", "<![CDATA[". (int)$orderItem->getQtyOrdered() ."]]>");
+
+            $upcValue = $this->_getUPC($product);
+            if ($upcValue) {
+                $this->addXmlElement("UPC", "<![CDATA[{$upcValue}]]>");
+            }
 
             /*
              * Check for the attributes
@@ -736,5 +748,43 @@ class Export
         $this->addXmlElement("Quantity", 1);
         $this->addXmlElement("UnitPrice", "<![CDATA[{$order->getDiscountAmount()}]]>");
         $this->_xmlData .= "\t</Item>\n";
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\Product|null $product
+     * @return string|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    private function _getUPC(?\Magento\Catalog\Model\Product $product): ?string
+    {
+        if (empty($this->_upcMapping) || empty($product)) {
+            return null;
+        }
+        $attribute = $this->_upcMapping;
+        if (!$product->hasData($attribute)) {
+            return null;
+        }
+
+        $attributeInfo = $this->_eavConfig->getAttribute(
+            $this->_getEntityType(),
+            $attribute
+        );
+
+        if (empty($attributeInfo) || empty($attributeInfo->getId())) {
+            return null;
+        }
+        $inputType = $attributeInfo->getFrontendInput();
+        if (in_array($inputType, ['select', 'multiselect'])) {
+            $upcValue = $product->getAttributeText($attribute);
+        } else {
+            $upcValue = $product->getData($attribute);
+        }
+        if(empty($upcValue)) {
+            return null;
+        }
+        if (is_array($upcValue)) {
+            $upcValue = implode(', ', $upcValue);
+        }
+        return $upcValue;
     }
 }
