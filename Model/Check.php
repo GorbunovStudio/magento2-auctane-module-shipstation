@@ -2,7 +2,7 @@
 
 namespace Auctane\Api\Model;
 
-use Auctane\Api\Api\CheckInterface;
+use Auctane\Api\CheckInterface;
 use Auctane\Api\Exception\AuthenticationFailedException;
 use Auctane\Api\Request\Authenticator;
 

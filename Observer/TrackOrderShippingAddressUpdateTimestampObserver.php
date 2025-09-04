@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Auctane\Api\Observer;
 
-use Auctane\Api\Api\OrderAddressTimestampRepositoryInterface;
+use Auctane\Api\OrderAddressTimestampRepositoryInterface;
 
 use DateTime;
 use Magento\Framework\Event\Observer;

@@ -2,7 +2,7 @@
 
 namespace Auctane\Api\Model\Action;
 
-use Auctane\Api\Api\Data\OrderAddressTimestampInterface;
+use Auctane\Api\Data\OrderAddressTimestampInterface;
 use Auctane\Api\Helper\Data;
 use Auctane\Api\Model\Config\Source\ImportChild;
 use Auctane\Api\Model\WeightAdapter;

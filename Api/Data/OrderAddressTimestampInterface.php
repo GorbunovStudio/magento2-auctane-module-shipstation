@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auctane\Api\Api\Data;
+namespace Auctane\Api\Data;
 
 interface OrderAddressTimestampInterface
 {

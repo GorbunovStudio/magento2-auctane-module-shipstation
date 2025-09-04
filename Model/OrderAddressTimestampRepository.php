@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Auctane\Api\Model;
 
-use Auctane\Api\Api\OrderAddressTimestampRepositoryInterface;
-use Auctane\Api\Api\Data\OrderAddressTimestampInterface;
-use Auctane\Api\Api\Data\OrderAddressTimestampInterfaceFactory;
-use Auctane\Api\Api\Data\OrderAddressTimestampSearchResultsInterface;
-use Auctane\Api\Api\Data\OrderAddressTimestampSearchResultsInterfaceFactory;
+use Auctane\Api\OrderAddressTimestampRepositoryInterface;
+use Auctane\Api\Data\OrderAddressTimestampInterface;
+use Auctane\Api\Data\OrderAddressTimestampInterfaceFactory;
+use Auctane\Api\Data\OrderAddressTimestampSearchResultsInterface;
+use Auctane\Api\Data\OrderAddressTimestampSearchResultsInterfaceFactory;
 use Auctane\Api\Model\ResourceModel\OrderAddressTimestamp as OrderAddressTimestampResource;
 use Auctane\Api\Model\ResourceModel\OrderAddressTimestamp\CollectionFactory;
 

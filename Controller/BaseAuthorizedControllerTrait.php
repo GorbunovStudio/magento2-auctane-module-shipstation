@@ -1,7 +1,7 @@
 <?php
 namespace Auctane\Api\Controller;
 
-use Auctane\Api\Api\AuthorizationInterface;
+use Auctane\Api\AuthorizationInterface;
 use Magento\Framework\App\ObjectManager;
 
 trait BaseAuthorizedControllerTrait

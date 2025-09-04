@@ -1,5 +1,5 @@
 <?php
-namespace Auctane\Api\Api;
+namespace Auctane\Api;
 
 use Magento\Framework\App\Action\HttpDeleteActionInterface;
 use Magento\Framework\App\Action\HttpGetActionInterface;
