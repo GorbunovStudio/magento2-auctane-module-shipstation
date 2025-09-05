@@ -1,5 +1,5 @@
 <?php
-namespace Auctane\Api;
+namespace Auctane\Api\Api;
 
 interface AuthorizationInterface
 {

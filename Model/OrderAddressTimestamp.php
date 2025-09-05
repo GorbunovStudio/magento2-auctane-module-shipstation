@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Auctane\Api\Model;
 
-use Auctane\Api\Data\OrderAddressTimestampInterface;
+use Auctane\Api\Api\Data\OrderAddressTimestampInterface;
 use Auctane\Api\Model\ResourceModel\OrderAddressTimestamp as Resource;
 
 use Magento\Framework\Model\AbstractModel;

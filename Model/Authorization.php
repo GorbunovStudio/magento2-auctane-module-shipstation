@@ -1,7 +1,7 @@
 <?php
 namespace Auctane\Api\Model;
 
-use Auctane\Api\AuthorizationInterface;
+use Auctane\Api\Api\AuthorizationInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;

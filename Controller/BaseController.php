@@ -1,7 +1,7 @@
 <?php
 namespace Auctane\Api\Controller;
 
-use Auctane\Api\HttpActionInterface;
+use Auctane\Api\Api\HttpActionInterface;
 use Auctane\Api\Exception\ApiException;
 use Auctane\Api\Exception\AuthorizationException;
 use Magento\Framework\App\CsrfAwareActionInterface;

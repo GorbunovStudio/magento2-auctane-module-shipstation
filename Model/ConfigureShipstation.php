@@ -2,7 +2,7 @@
 
 namespace Auctane\Api\Model;
 
-use Auctane\Api\ConfigureShipstationInterface;
+use Auctane\Api\Api\ConfigureShipstationInterface;
 use Auctane\Api\Exception\AuthenticationFailedException;
 use Auctane\Api\Request\Authenticator;
 use Magento\Framework\App\Cache\Type\Config;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Auctane\Api;
+namespace Auctane\Api\Api;
 
 /**
  * Interface ConfigureShipstationInterface

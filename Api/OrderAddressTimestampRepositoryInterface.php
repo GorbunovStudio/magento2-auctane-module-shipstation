@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Auctane\Api;
+namespace Auctane\Api\Api;
 
-use Auctane\Api\Data\OrderAddressTimestampInterface;
-use Auctane\Api\Data\OrderAddressTimestampSearchResultsInterface;
+use Auctane\Api\Api\Data\OrderAddressTimestampInterface;
+use Auctane\Api\Api\Data\OrderAddressTimestampSearchResultsInterface;
 
 use Magento\Framework\Api\SearchCriteriaInterface;
 
@@ -14,8 +14,8 @@ interface OrderAddressTimestampRepositoryInterface
     /**
      * Save OrderAddressTimestamp
      *
-     * @param \Auctane\Api\Data\OrderAddressTimestampInterface $entity
-     * @return \Auctane\Api\Data\OrderAddressTimestampInterface
+     * @param \Auctane\Api\Api\Data\OrderAddressTimestampInterface $entity
+     * @return \Auctane\Api\Api\Data\OrderAddressTimestampInterface
      */
     public function save(OrderAddressTimestampInterface $entity): OrderAddressTimestampInterface;
 
@@ -23,7 +23,7 @@ interface OrderAddressTimestampRepositoryInterface
      * Get OrderAddressTimestamp by ID
      *
      * @param int $id
-     * @return \Auctane\Api\Data\OrderAddressTimestampInterface
+     * @return \Auctane\Api\Api\Data\OrderAddressTimestampInterface
      */
     public function get(int $id): OrderAddressTimestampInterface;
 
@@ -31,14 +31,14 @@ interface OrderAddressTimestampRepositoryInterface
      * Find OrderAddressTimestamp by ID
      *
      * @param int $id
-     * @return \Auctane\Api\Data\OrderAddressTimestampInterface
+     * @return \Auctane\Api\Api\Data\OrderAddressTimestampInterface
      */
     public function find(int $id): OrderAddressTimestampInterface;
 
     /**
      * Delete OrderAddressTimestamp
      *
-     * @param \Auctane\Api\Data\OrderAddressTimestampInterface $entity
+     * @param \Auctane\Api\Api\Data\OrderAddressTimestampInterface $entity
      * @return bool
      */
     public function delete(OrderAddressTimestampInterface $entity): bool;
@@ -54,7 +54,7 @@ interface OrderAddressTimestampRepositoryInterface
     /**
      * Get empty model
      *
-     * @return \Auctane\Api\Data\OrderAddressTimestampInterface
+     * @return \Auctane\Api\Api\Data\OrderAddressTimestampInterface
      */
     public function getEmptyModel(): OrderAddressTimestampInterface;
 
@@ -62,7 +62,7 @@ interface OrderAddressTimestampRepositoryInterface
      * Get list of OrderAddressTimestamp
      *
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Auctane\Api\Data\OrderAddressTimestampSearchResultsInterface
+     * @return \Auctane\Api\Api\Data\OrderAddressTimestampSearchResultsInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria): OrderAddressTimestampSearchResultsInterface;
 }
