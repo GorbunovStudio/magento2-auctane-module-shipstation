@@ -1,5 +1,5 @@
 {
-  "name": "auctane/shipstation-api",
+  "name": "auctane/api",
   "description": "ShipStation is a web-based shipping solution that is integrated with the Magento API for retrieving order information and updating shipping details.",
   "version": "2.5.7",
   "type": "magento2-component",
