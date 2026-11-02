@@ -1,0 +1,38 @@
+name: Create Release on Tag
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Create Release and Upload Assets
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up version
+      run: |
+        TAG_NAME=${GITHUB_REF#refs/tags/}
+        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+
+    - name: Zip the Api directory
+      run: zip -r ${{ runner.temp }}/Auctane_Api-${{ env.TAG_NAME }}.zip Api
+
+    - name: Create release and upload asset
+      run: |
+        gh release create ${{ env.TAG_NAME }} \
+          --title "${{ env.TAG_NAME }}" \
+          --draft \
+          "${{ runner.temp }}/Auctane_Api-${{ env.TAG_NAME }}.zip#Auctane_Api-${{ env.TAG_NAME }}.zip"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Notify Packagist
+      run: |
+        curl -XPOST -H 'content-type:application/json' \
+          'https://packagist.org/api/update-package?username=${{ secrets.PACKAGIST_USERNAME }}&apiToken=${{ secrets.PACKAGIST_TOKEN }}' \
+          -d '{"repository":{"url":"https://github.com/shipstation/plugin-magento"}}'

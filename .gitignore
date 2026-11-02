@@ -1,0 +1,13 @@
+/vendor/
+/node_modules/
+/generated/
+/var/
+/pub/static/
+/app/etc/config.php
+/app/etc/env.php
+/coverage/
+.idea/
+.DS_Store
+*.zip
+*.tar.gz
+phpcs-report.xml
