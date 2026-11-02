@@ -14,22 +14,24 @@ interface OrderAddressTimestampInterface
      *
      * @return int|null
      */
-    public function getId();
+    public function getId(): ?int;
 
     /**
      * Set entity ID
      *
+     * The parameter stays untyped to remain compatible with AbstractModel::setId($value).
+     *
      * @param int|null $value
      * @return $this
      */
-    public function setId($value);
+    public function setId($value): self;
 
     /**
      * Get updated at
      *
-     * @return string
+     * @return string|null Null until the entity is saved or loaded
      */
-    public function getUpdatedAt(): string;
+    public function getUpdatedAt(): ?string;
 
     /**
      * Set updated at
