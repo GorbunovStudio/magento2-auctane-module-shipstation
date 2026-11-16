@@ -567,7 +567,7 @@ class Export
                     }
 
                     if ($taxAmount == '0.0000' || $taxAmount == null) {
-                        $taxAmount = $this->_extractPriceFromParentItem($parentItem);
+                        $taxAmount = $this->_extractTaxAmountFromParentItem($parentItem);
                     }
 
                     $name = $parentItem->getName();
